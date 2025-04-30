@@ -6,7 +6,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: apisix-dashboard
     app.kubernetes.io/name: apisix-dashboard
-    app.kubernetes.io/version: 2.9.0
+    app.kubernetes.io/version: 3.0.1
 spec:
   replicas: 1
   selector:
@@ -27,7 +27,7 @@ spec:
             defaultMode: 420
       containers:
         - name: apisix-dashboard
-          image: apache/apisix-dashboard:2.9.0
+          image: apache/apisix-dashboard:3.0.1-alpine
           ports:
             - name: http
               containerPort: 9000
@@ -82,17 +82,18 @@ metadata:
   labels:
     app.kubernetes.io/instance: apisix-dashboard
     app.kubernetes.io/name: apisix-dashboard
-    app.kubernetes.io/version: 2.9.0
+    app.kubernetes.io/version: 3.0.1
 spec:
   ports:
     - name: http
       protocol: TCP
       port: 80
       targetPort: http
+      nodePort: 32394
   selector:
     app.kubernetes.io/instance: apisix-dashboard
     app.kubernetes.io/name: apisix-dashboard
-  type: ClusterIP
+  type: NodePort
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -102,7 +103,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: apisix-dashboard
     app.kubernetes.io/name: apisix-dashboard
-    app.kubernetes.io/version: 2.9.0
+    app.kubernetes.io/version: 3.0.1
 data:
   conf.yaml: |-
     conf:
@@ -124,6 +125,53 @@ data:
       users:
         - username: admin
           password: admin
+
+    plugins:                          # plugin list (sorted in alphabetical order)
+      - api-breaker
+      - authz-keycloak
+      - basic-auth
+      - batch-requests
+      - consumer-restriction
+      - cors
+      # - dubbo-proxy
+      - echo
+      # - error-log-logger
+      # - example-plugin
+      - fault-injection
+      - grpc-transcode
+      - hmac-auth
+      - http-logger
+      - ip-restriction
+      - jwt-auth
+      - kafka-logger
+      - key-auth
+      - limit-conn
+      - limit-count
+      - limit-req
+      # - log-rotate
+      # - node-status
+      - openid-connect
+      - prometheus
+      - proxy-cache
+      - proxy-mirror
+      - proxy-rewrite
+      - redirect
+      - referer-restriction
+      - request-id
+      - request-validation
+      - response-rewrite
+      - serverless-post-function
+      - serverless-pre-function
+      # - skywalking
+      - sls-logger
+      - syslog
+      - tcp-logger
+      - udp-logger
+      - uri-blocker
+      - wolf-rbac
+      - zipkin
+      - server-info
+      - traffic-split
 ---
 apiVersion: v1
 kind: ServiceAccount
