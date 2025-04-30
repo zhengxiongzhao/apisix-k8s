@@ -137,6 +137,16 @@ data:
       enable_ipv6: false
       config_center: etcd             # etcd: use etcd to store the config value
                                       # yaml: fetch the config value from local yaml file `/your_path/conf/apisix.yaml`
+      proxy_timeout:
+        connect: 60s
+        send: 60s
+        read: 60s
+      upstream:
+        default:
+          timeout:
+            connect: 60s
+            send: 60s
+            read: 60s
 
     deployment:
       admin:
